@@ -1,4 +1,23 @@
 {
+  "name": "tumocode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "balloonGame.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TKartoshka/TumoCode.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TKartoshka/TumoCode/issues"
+  },
+  "homepage": "https://github.com/TKartoshka/TumoCode#readme",
   "dependencies": {
     "express": "^4.18.2"
   }
