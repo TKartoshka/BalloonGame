@@ -1,0 +1,2 @@
+{"commonBurst":7,"rareBurst":1,"superRareBurst":1,"randomBurst":1,"badBurst":0,"score":58,"record":58}
+{"commonBurst":15,"rareBurst":4,"superRareBurst":2,"randomBurst":2,"badBurst":0,"score":196,"record":196}

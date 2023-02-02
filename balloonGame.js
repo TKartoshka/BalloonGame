@@ -12,6 +12,7 @@ function draw() {
 
     if (balloon.y <= 0) {
       noLoop();
+      clearInterval(interval);
       Game.balloons.length = 0;
       Game.notBalloons.length = 0;
       background("red");
@@ -68,16 +69,28 @@ function mousePressed() {
   if (!isLooping()) {
     loop();
     Game.score = 0;
+    interval = setInterval(() => {
+      Game.SendStatistics();
+    }, 5000);
   }
   Game.checkIfBalloonBurst();
   Game.checkIfNotBalloonBurst();
 }
+
+let interval = setInterval(() => {
+  Game.SendStatistics();
+}, 5000);
 
 class Game {
   static balloons = [];
   static notBalloons = [];
   static score = 0;
   static record = 0;
+  static commonCount = 0;
+  static rareCount = 0;
+  static superRareCount = 0;
+  static randomCount = 0;
+  static badCount = 0;
 
   static addCommonBalloon() {
     let balloon = new CommonBalloon("blue", 50);
@@ -121,6 +134,25 @@ class Game {
       }
     });
   }
+  static SendStatistics() {
+    let statistics = {
+      commonBurst: this.commonCount,
+      rareBurst: this.rareCount,
+      superRareBurst: this.superRareCount,
+      randomBurst: this.randomCount,
+      badBurst: this.badCount,
+      score: this.score,
+      record: this.record,
+    };
+
+    fetch("/statistics", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(statistics),
+    });
+  }
 }
 
 class CommonBalloon {
@@ -145,6 +177,7 @@ class CommonBalloon {
   burst(index) {
     Game.balloons.splice(index, 1);
     Game.score += 1;
+    Game.commonCount += 1;
   }
 }
 
@@ -155,6 +188,7 @@ class RareBalloon extends CommonBalloon {
   burst(index) {
     Game.balloons.splice(index, 1);
     Game.score += 10;
+    Game.rareCount += 1;
   }
 }
 
@@ -165,6 +199,7 @@ class SuperRareBalloon extends CommonBalloon {
   burst(index) {
     Game.balloons.splice(index, 1);
     Game.score += 50;
+    Game.superRareCount += 1;
   }
 }
 
@@ -176,6 +211,7 @@ class RandomBalloon extends CommonBalloon {
   burst(index) {
     Game.notBalloons.splice(index, 1);
     Game.score += randPoints(-50, 100);
+    Game.randomCount += 1;
   }
 }
 function randPoints(min, max) {
@@ -192,5 +228,6 @@ class BadBalloon extends CommonBalloon {
   burst(index) {
     Game.notBalloons.splice(index, 1);
     Game.score -= 30;
+    Game.badCount += 1;
   }
 }
